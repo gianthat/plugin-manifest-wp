@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Plugin Manifest
  * Plugin URI:        pluginmanifest-wp.com
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       See WordPress plugin status at a glance, whenever, wherever.
  * Version:           1.0.0
  * Author:            Reid Burnett
  * Author URI:        gianthatworks.com
