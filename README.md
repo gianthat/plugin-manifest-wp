@@ -1,2 +1,2 @@
-# plugin-manifest-wp
+# WordPress Plugin Manifest 
 WordPress Plugin Manifest plugin
