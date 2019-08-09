@@ -41,6 +41,15 @@ class Plugin_Manifest_Wp_Admin {
 	private $version;
 
 	/**
+		 * The options name to be used in this plugin
+		 *
+		 * @since  	1.0.0
+		 * @access 	private
+		 * @var  	string 		$option_name 	Option name of this plugin
+		 */
+		private $option_name = 'plugin_manifest_wp';
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
