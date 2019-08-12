@@ -44,6 +44,15 @@ define( 'PLUGIN_MANIFEST_WP_VERSION', '1.0.0' );
 function activate_plugin_manifest_wp() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-plugin-manifest-wp-activator.php';
 	Plugin_Manifest_Wp_Activator::activate();
+  if ( is_plugin_active( plugin_basename(__FILE__)))
+    {
+        deactivate_plugins( plugin_basename(__FILE__)) ;
+        // Hide the default "Plugin activated" notice
+        if ( isset ($_GET['activate']))
+        {
+            unset ($_GET['activate']) ;
+        }
+    }
 }
 
 /**
