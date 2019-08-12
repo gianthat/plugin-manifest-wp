@@ -117,6 +117,11 @@ class Plugin_Manifest_Wp {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-manifest-wp-admin.php';
 
 		/**
+		 * The class responsible running plugin tasks.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-manifest-wp-plugin-tasks.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -153,11 +158,16 @@ class Plugin_Manifest_Wp {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Plugin_Manifest_Wp_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin_plugin_tasks = new Plugin_Manifest_Wp_Plugin_Tasks ();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_options_page' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_setting' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_option' );
+		$this->loader->add_action( 'admin_init', $plugin_admin_plugin_tasks, 'get_all_items' );
+		// $this->loader->add_action( 'admin_init', $plugin_admin_wpcli, 'get_item_list' );
+		// $this->loader->add_action( 'admin_footer', $plugin_admin, 'plugin_manifest_wp_action_javascript' );
 
 	}
 
