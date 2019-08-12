@@ -22,10 +22,21 @@
 
       <?php
         settings_fields( $this->plugin_name );
-        do_settings_sections( $this->plugin_name );
+        do_settings_sections( $this->plugin_name . '_settings' );
         submit_button();
       ?>
 
     </form>
+
+    <hr/>
+
+    <!-- <form action="admin-ajax.php" method="post"> -->
+
+      <?php
+        settings_fields( $this->plugin_name );
+        do_settings_sections( $this->plugin_name . '_options' );
+      ?>
+
+    <!-- </form> -->
 
 </div>
