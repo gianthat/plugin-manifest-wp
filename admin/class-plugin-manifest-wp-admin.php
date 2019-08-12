@@ -20,7 +20,10 @@
  * @subpackage Plugin_Manifest_Wp/admin
  * @author     Reid Burnett <reid@gianthatworks.com>
  */
+
+
 class Plugin_Manifest_Wp_Admin {
+	
 
 	/**
 	 * The ID of this plugin.
@@ -149,7 +152,7 @@ class Plugin_Manifest_Wp_Admin {
 						$this->option_name . '_general', // TODO Might rename this more specifically later
 						__( 'General', 'plugin-manifest-wp' ),
 						array( $this, $this->option_name . '_general_cb' ),
-						$this->plugin_name
+						$this->plugin_name . '_settings'
 					);
 
 					// Add Radio buttons for Frequency
@@ -157,7 +160,7 @@ class Plugin_Manifest_Wp_Admin {
 							$this->option_name . '_frequency',
 							__( 'Push frequency', 'plugin-manifest-wp' ),
 							array( $this, $this->option_name . '_frequency_cb' ),
-							$this->plugin_name,
+							$this->plugin_name . '_settings',
 							$this->option_name . '_general',
 							array( 'label_for' => $this->option_name . '_frequency' )
 						);
@@ -167,7 +170,7 @@ class Plugin_Manifest_Wp_Admin {
 							$this->option_name . '_day',
 							__( 'Preferred day for push', 'plugin-manifest-wp' ),
 							array( $this, $this->option_name . '_day_cb' ),
-							$this->plugin_name,
+							$this->plugin_name . '_settings',
 							$this->option_name . '_general',
 							array( 'label_for' => $this->option_name . '_day' )
 						);
@@ -177,7 +180,7 @@ class Plugin_Manifest_Wp_Admin {
 							$this->option_name . '_license_key',
 							__( 'License Key', 'plugin-manifest-wp' ),
 							array( $this, $this->option_name . '_license_key_cb' ),
-							$this->plugin_name,
+							$this->plugin_name . '_settings',
 							$this->option_name . '_general',
 							array( 'label_for' => $this->option_name . '_license_key' )
 						);
@@ -186,6 +189,20 @@ class Plugin_Manifest_Wp_Admin {
 				// End General Setting section
 				//
 
+				// TODO Registers settings in wp db
+				register_setting( $this->plugin_name, $this->option_name . '_frequency', array( $this, $this->option_name . '_sanitize_frequency' ) );
+				register_setting( $this->plugin_name, $this->option_name . '_day', array( $this, $this->option_name . '_sanitize_day' ) );
+				register_setting( $this->plugin_name, $this->option_name . '_license', 'intval' );
+			}
+
+
+		/**
+			 * Render the options page for plugin
+			 *
+			 * @since  1.0.0
+			 */
+			public function register_option() {
+
 				//
 				// Add Extra Settings Section
 				//
@@ -193,7 +210,10 @@ class Plugin_Manifest_Wp_Admin {
 						$this->option_name . '_extra', // TODO Might rename this more specifically later
 						__( 'Extra', 'plugin-manifest-wp' ),
 						array( $this, $this->option_name . '_extra_cb' ),
-						$this->plugin_name
+						$this->plugin_name . '_options',
+						array( 
+							'action'	=> $this->option_name . 'pm_wp_cli'
+						)
 					);
 
 					// Add button for force push
@@ -201,15 +221,11 @@ class Plugin_Manifest_Wp_Admin {
 							$this->option_name . '_force_push',
 							__( 'Force Push', 'plugin-manifest-wp' ),
 							array( $this, $this->option_name . '_force_push_cb' ),
-							$this->plugin_name,
+							$this->plugin_name . '_options',
 							$this->option_name . '_extra',
 							array( 'label_for' => $this->option_name . '_force_push' )
 						);
 
-				// TODO Registers settings in wp db
-				register_setting( $this->plugin_name, $this->option_name . '_frequency', array( $this, $this->option_name . '_sanitize_frequency' ) );
-				register_setting( $this->plugin_name, $this->option_name . '_day', array( $this, $this->option_name . '_sanitize_day' ) );
-				register_setting( $this->plugin_name, $this->option_name . '_license', 'intval' );
 			}
 
 		/**
@@ -219,15 +235,6 @@ class Plugin_Manifest_Wp_Admin {
 			 */
 			public function plugin_manifest_wp_general_cb() {
 				echo '<p>' . __( 'Please change the settings accordingly.', 'plugin-manifest-wp' ) . '</p>';
-			}
-
-		/**
-			 * Render the text for the extra section
-			 *
-			 * @since  1.0.0
-			 */
-			public function plugin_manifest_wp_extra_cb() {
-				echo '<p>' . __( 'To force this plugin to push and send the site\'s plugin list, click this button.', 'plugin-manifest-wp' ) . '</p>';
 			}
 
 		/**
@@ -317,13 +324,22 @@ class Plugin_Manifest_Wp_Admin {
 				}
 
 			/**
+				 * Render the text for the extra section
+				 *
+				 * @since  1.0.0
+				 */
+				public function plugin_manifest_wp_extra_cb() {
+					echo '<p>' . __( 'To force this plugin to push and send the site\'s plugin list, click this button.', 'plugin-manifest-wp' ) . '</p>';
+				}
+
+			/**
 				 * Render the Force Push button for this plugin
 				 *
 				 * @since  1.0.0
 				 */
 				public function plugin_manifest_wp_force_push_cb() {
-					echo '<input type="button" class="button button-secondary button-large" name="' . $this->option_name . '_force_push' . '" id="' . $this->option_name . '_force_push' . '" value="Force push"> ';
+					echo '<button class="button button-secondary button-large button-force" name="' . $this->option_name . '_force_push' . '" id="' . $this->option_name . '_force_push' . '">Force push</button>';
+					echo '<div class="result">hi</div>';
 				}
-
 
 }
