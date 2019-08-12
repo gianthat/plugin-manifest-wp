@@ -57,6 +57,8 @@ class Plugin_Manifest_Wp {
 	 */
 	protected $version;
 
+
+
 	/**
 	 * Define the core functionality of the plugin.
 	 *
