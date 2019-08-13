@@ -8,7 +8,7 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              gianthatworks.com
+ * @link              1905newmedia.com
  * @since             1.0.0
  * @package           Plugin_Manifest_Wp
  *
@@ -16,9 +16,9 @@
  * Plugin Name:       Plugin Manifest
  * Plugin URI:        pluginmanifest-wp.com
  * Description:       See WordPress plugin status at a glance, whenever, wherever.
- * Version:           1.0.0
- * Author:            Reid Burnett
- * Author URI:        gianthatworks.com
+ * Version:           1.0.0-alpha.1
+ * Author:            1905 New Media
+ * Author URI:        1905newmedia.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       plugin-manifest-wp

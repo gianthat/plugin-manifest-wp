@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: TODO (this should be a list of wordpress.org userid's)
+Contributors: reidelliott
 Donate link: gianthatworks.com
 Tags: dashboard, TODO TODO
 Requires at least: 4.9.0
