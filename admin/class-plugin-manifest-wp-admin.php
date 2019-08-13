@@ -175,16 +175,26 @@ class Plugin_Manifest_Wp_Admin {
 							array( 'label_for' => $this->option_name . '_license_key' )
 						);
 
+					// Add input field for Email address
+						add_settings_field(
+							$this->option_name . '_email_address',
+							__( 'Email Address', 'plugin-manifest-wp' ),
+							array( $this, $this->option_name . '_email_address_cb' ),
+							$this->plugin_name . '_settings',
+							$this->option_name . '_general',
+							array( 'label_for' => $this->option_name . '_email_address' )
+						);
+
 				//
 				// End General Setting section
 				//
 
-				// TODO Registers settings in wp db
 				register_setting( $this->plugin_name, $this->option_name . '_frequency', array( $this, $this->option_name . '_sanitize_frequency' ) );
 				register_setting( $this->plugin_name, $this->option_name . '_day', array( $this, $this->option_name . '_sanitize_day' ) );
-				register_setting( $this->plugin_name, $this->option_name . '_license', 'intval' );
-			}
+				register_setting( $this->plugin_name, $this->option_name . '_license_key', 'string' );
+				register_setting( $this->plugin_name, $this->option_name . '_email_address', 'string' );
 
+		}
 
 		/**
 			 * Render the options page for plugin
@@ -233,25 +243,26 @@ class Plugin_Manifest_Wp_Admin {
 			 * @since  1.0.0
 			 */
 			public function plugin_manifest_wp_frequency_cb() {
+				$frequency = get_option( $this->option_name . '_frequency' );
 				?>
 					<fieldset>
 						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_frequency' ?>" id="<?php echo $this->option_name . '_frequency' ?>" value="daily">
+							<input type="radio" name="<?php echo $this->option_name . '_frequency' ?>" id="<?php echo $this->option_name . '_frequency' ?>" value="daily" <?php checked( $frequency, 'daily' ); ?>>
 							<?php _e( 'Daily', 'plugin-manifest-wp' ); ?>
 						</label>
 						<br>
 						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_frequency' ?>" value="weekly" checked>
+							<input type="radio" name="<?php echo $this->option_name . '_frequency' ?>" value="weekly" <?php checked( $frequency, 'weekly' ); ?>>
 							<?php _e( 'Weekly', 'plugin-manifest-wp' ); ?>
 						</label>
 						<br>
 						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_frequency' ?>" value="biweekly">
+							<input type="radio" name="<?php echo $this->option_name . '_frequency' ?>" value="biweekly" <?php checked( $frequency, 'biweekly' ); ?>>
 							<?php _e( 'Bi-weekly', 'plugin-manifest-wp' ); ?>
 						</label>
 						<br>
 						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_frequency' ?>" value="monthly">
+							<input type="radio" name="<?php echo $this->option_name . '_frequency' ?>" value="monthly" <?php checked( $frequency, 'monthly' ); ?>>
 							<?php _e( 'Monthly', 'plugin-manifest-wp' ); ?>
 						</label>
 					</fieldset>
@@ -264,40 +275,41 @@ class Plugin_Manifest_Wp_Admin {
 			 * @since  1.0.0
 			 */
 			public function plugin_manifest_wp_day_cb() {
+				$day = get_option( $this->option_name . '_day' );
 				?>
 					<fieldset>
 						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" id="<?php echo $this->option_name . '_day' ?>" value="monday">
+							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" id="<?php echo $this->option_name . '_day' ?>" value="monday" <?php checked( $day, 'monday' ); ?>>
 							<?php _e( 'Monday', 'plugin-manifest-wp' ); ?>
 						</label>
 						<br>
 						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="tuesday">
+							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="tuesday" <?php checked( $day, 'tuesday' ); ?>>
 							<?php _e( 'Tuesday', 'plugin-manifest-wp' ); ?>
 						</label>
 						<br>
 						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="wednesday">
+							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="wednesday" <?php checked( $day, 'wednesday' ); ?>>
 							<?php _e( 'Wednesday', 'plugin-manifest-wp' ); ?>
 						</label>
 						<br>
 						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="thursday">
+							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="thursday" <?php checked( $day, 'thursday' ); ?>>
 							<?php _e( 'Thursday', 'plugin-manifest-wp' ); ?>
 						</label>
 						<br>
 						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="friday">
+							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="friday" <?php checked( $day, 'friday' ); ?>>
 							<?php _e( 'Friday', 'plugin-manifest-wp' ); ?>
 						</label>
 						<br>
 						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="saturday">
+							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="saturday" <?php checked( $day, 'saturday' ); ?>>
 							<?php _e( 'Saturday', 'plugin-manifest-wp' ); ?>
 						</label>
 						<br>
 						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="sunday" checked>
+							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="sunday" <?php checked( $day, 'sunday' ); ?>>
 							<?php _e( 'Sunday', 'plugin-manifest-wp' ); ?>
 						</label>
 					</fieldset>
@@ -310,7 +322,45 @@ class Plugin_Manifest_Wp_Admin {
 				 * @since  1.0.0
 				 */
 				public function plugin_manifest_wp_license_key_cb() {
-					echo '<input type="text" size="80" name="' . $this->option_name . '_license_key' . '" id="' . $this->option_name . '_license_key' . '"> ';
+					$license_key = get_option( $this->option_name . '_license_key' );
+					echo '<input type="text" size="80" name="' . $this->option_name . '_license_key' . '" id="' . $this->option_name . '_license_key' . '" value="' . $license_key . '">';
+
+				}
+
+			/**
+				 * Render the email address input for this plugin
+				 *
+				 * @since  1.0.0
+				 */
+				public function plugin_manifest_wp_email_address_cb() {
+					$email_address = get_option( $this->option_name . '_email_address' );
+					echo '<input type="text" size="80" name="' . $this->option_name . '_email_address' . '" id="' . $this->option_name . '_email_address' . '" value="' . $email_address . '">';
+				}
+
+			/**
+				 * Sanitize the text Frequency value before being saved to database
+				 *
+				 * @param  string $_frequency $_POST value
+				 * @since  1.0.0
+				 * @return string           Sanitized value
+				 */
+				public function plugin_manifest_wp_sanitize_frequency( $frequency ) {
+					if ( in_array( $frequency, array( 'daily', 'weekly', 'biweekly', 'monthly' ), true ) ) {
+				        return $frequency;
+				    }
+				}
+
+			/**
+				 * Sanitize the text Day value before being saved to database
+				 *
+				 * @param  string $_day $_POST value
+				 * @since  1.0.0
+				 * @return string           Sanitized value
+				 */
+				public function plugin_manifest_wp_sanitize_day( $day ) {
+					if ( in_array( $day, array( 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday' ), true ) ) {
+				        return $day;
+				    }
 				}
 
 			/**
@@ -328,8 +378,9 @@ class Plugin_Manifest_Wp_Admin {
 				 * @since  1.0.0
 				 */
 				public function plugin_manifest_wp_force_push_cb() {
-					echo '<button class="button button-secondary button-large button-force" name="' . $this->option_name . '_force_push' . '" id="' . $this->option_name . '_force_push' . '">Force push</button>';
-					echo '<div class="result">hi</div>';
+					echo '<button class="button button-secondary button-large button-force mb-3" name="' . $this->option_name . '_force_push' . '" id="' . $this->option_name . '_force_push' . '">Force push</button>';
+
+					echo '<div id="plugin-list-json" class="result"><code>Hi! Your JSON sample will appear here.</code></div>';
 				}
 
 }
