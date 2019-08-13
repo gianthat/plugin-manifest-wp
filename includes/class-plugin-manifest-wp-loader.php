@@ -1,16 +1,6 @@
 <?php
 
 /**
- * Register all actions and filters for the plugin
- *
- * @link       gianthatworks.com
- * @since      1.0.0
- *
- * @package    Plugin_Manifest_Wp
- * @subpackage Plugin_Manifest_Wp/includes
- */
-
-/**
  * Register all actions and filters for the plugin.
  *
  * Maintain a list of all hooks that are registered throughout

@@ -1,16 +1,6 @@
 <?php
 
 /**
- * Fired during plugin deactivation
- *
- * @link       gianthatworks.com
- * @since      1.0.0
- *
- * @package    Plugin_Manifest_Wp
- * @subpackage Plugin_Manifest_Wp/includes
- */
-
-/**
  * Fired during plugin deactivation.
  *
  * This class defines all code necessary to run during the plugin's deactivation.
