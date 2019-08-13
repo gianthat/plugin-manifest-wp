@@ -3,16 +3,6 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       gianthatworks.com
- * @since      1.0.0
- *
- * @package    Plugin_Manifest_Wp
- * @subpackage Plugin_Manifest_Wp/admin
- */
-
-/**
- * The admin-specific functionality of the plugin.
- *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
@@ -44,13 +34,13 @@ class Plugin_Manifest_Wp_Admin {
 	private $version;
 
 	/**
-		 * The options name to be used in this plugin
-		 *
-		 * @since  	1.0.0
-		 * @access 	private
-		 * @var  	string 		$option_name 	Option name of this plugin
-		 */
-		private $option_name = 'plugin_manifest_wp';
+	 * The options name to be used in this plugin
+	 *
+	 * @since  	1.0.0
+	 * @access 	private
+	 * @var  	string 		$option_name 	Option name of this plugin
+	 */
+	private $option_name = 'plugin_manifest_wp';
 
 	/**
 	 * Initialize the class and set its properties.
