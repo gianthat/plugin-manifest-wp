@@ -38,6 +38,22 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'PLUGIN_MANIFEST_WP_VERSION', '1.0.0' );
 
 /**
+ * Adds a link to the plugins page for easy access to PM-WP Settings.
+ */
+function plugin_manifest_wp_settings_link( $actions ) {
+
+    $settings = array('settings' => '<a href="options-general.php?page=plugin-manifest-wp">' . __('Settings', 'General') . '</a>');
+    $site_link = array('support' => '<a href="https://1905newmedia.com" target="_blank">Support</a>');
+
+    $actions = array_merge($settings, $actions);
+    $actions = array_merge($site_link, $actions);
+            
+    return $actions;
+}
+
+add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'plugin_manifest_wp_settings_link', 10, 5);
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-plugin-manifest-wp-activator.php
  */
