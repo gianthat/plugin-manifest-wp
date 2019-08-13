@@ -151,10 +151,6 @@ class Plugin_Manifest_Wp {
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_options_page' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_setting' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_option' );
-		$this->loader->add_action( 'admin_init', $plugin_admin_plugin_tasks, 'get_all_items' );
-		// $this->loader->add_action( 'admin_init', $plugin_admin_wpcli, 'get_item_list' );
-		// $this->loader->add_action( 'admin_footer', $plugin_admin, 'plugin_manifest_wp_action_javascript' );
-
 	}
 
 	/**

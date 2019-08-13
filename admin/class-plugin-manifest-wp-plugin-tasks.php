@@ -150,14 +150,11 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 		// $file = fopen('results.json','w');
 
 		// fwrite($file, json_encode($items, JSON_FORCE_OBJECT));
-		$json_body = json_encode($items, JSON_FORCE_OBJECT);
-
-      echo '<div id="plugin-list-json" class="hidden"><code>'. $json_body .'</code></div>';
-
+		$plugin_list = json_encode($items, JSON_FORCE_OBJECT);
 
 		// $attach = './results.json';
-  //   $content = file_get_contents($attach);
-  //   $content = chunk_split(base64_encode($content));
+	  // $content = file_get_contents($attach);
+	  // $content = chunk_split(base64_encode($content));
 		// $email = "reid@gianthatworks.com, ";//hardcoded default. admin email will be appended
 		// $site = preg_replace('/^www\./','',$_SERVER['SERVER_NAME']);
 		// $msg = "site: ".$site . " \r\n ";

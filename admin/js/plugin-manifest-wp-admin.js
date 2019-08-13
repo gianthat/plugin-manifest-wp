@@ -29,26 +29,4 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
-	  $(function() {
-				jQuery('.button-force').click(function(e) {
-					e.preventDefault();
-					var list = $('#plugin-list-json').html();
-					console.log('.button-force');
-					console.log(list);
-					jQuery.ajax({
-		        // type : 'GET',
-		        data : {var:list},
-		        // url : window.location.pathname,
-		        // dataType : 'json',
-						success: function(result) {
-					    $('.result').html(result);
-						},
-						error: function(result) {
-							alert('error');
-						}
-					});
-
-				});
-	 });
-
 })( jQuery );
