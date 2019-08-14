@@ -152,35 +152,25 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 			}
 		}
 
-		// $file = fopen('results.json','w');
-
-		// fwrite($file, json_encode($items, JSON_FORCE_OBJECT));
 		$plugin_list = json_encode($items, JSON_FORCE_OBJECT);
-		
-		   $uploads_dir = trailingslashit( wp_upload_dir()['basedir'] ) . 'plugin-manifest-wp-master';
-			wp_mkdir_p( $uploads_dir );
-		$uploads_dir_file = $uploads_dir.'/plugin-manifest-'.current_time('timestamp').'.json';
-		file_put_contents( $uploads_dir_file, $plugin_list ); 
-		
-		   $attachments = array(wp_upload_dir()['basedir'] . '/plugin-manifest-wp-master/plugin-manifest-'.current_time('timestamp').'.json');
-		   $headers = 'From: nav@projects.everybyte.in>' . "\r\n";
-		   $to = $_POST['email_id'];
-		   $mess = 'Attach JSON file';
-		   wp_mail($to, 'JSON File', $mess, $headers, $attachments); 
-		   	    
 
-		// $attach = './results.json';
-	  // $content = file_get_contents($attach);
-	  // $content = chunk_split(base64_encode($content));
-		// $email = "reid@gianthatworks.com, ";//hardcoded default. admin email will be appended
-		// $site = preg_replace('/^www\./','',$_SERVER['SERVER_NAME']);
-		// $msg = "site: ".$site . " \r\n ";
-		// $msg .= "json: <pre>" .$json_body. "</pre>";
-		// $msg .= $content;
+	/**
+	 * Adds a new directory in uploads and puts the JSON file in there.
+	 */
+		$uploads_dir = trailingslashit( wp_upload_dir()['basedir'] ) . 'plugin-manifest-wp';
+		wp_mkdir_p( $uploads_dir ); // creates the directory
+		$uploads_dir_file = $uploads_dir.'/plugin-manifest-'.current_time('timestamp').'.json'; // create a new file with current_time timestamp
+		file_put_contents( $uploads_dir_file, $plugin_list ); // put the file in the new directory
 
-		// mail($email,"Plugin Manifest",$msg); */
-		
-
+	/**
+	 * Creates an email with JSON file attached.
+	 */
+		$attachments = array(wp_upload_dir()['basedir'] . '/plugin-manifest-wp/plugin-manifest-'.current_time('timestamp').'.json');
+		$site = preg_replace('/^www\./','',$_SERVER['SERVER_NAME']);
+		$headers = 'From: <accounts@gianthatworks.com>' . "\r\n";
+		$to = $_POST['email_id'];
+		$mess = 'Plugin Manifest file from' . $site;
+		wp_mail($to, 'JSON File', $mess, $headers, $attachments);
 	}
 
 	/**
