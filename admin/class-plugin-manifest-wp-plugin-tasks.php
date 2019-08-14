@@ -36,6 +36,11 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
   protected function get_upgrader_class( $force ) {}
 
   protected function get_item_list() {}
+  
+  public function __construct() {
+		add_action( 'wp_ajax_nopriv_get_all_items', array( &$this,'get_all_items') );
+		add_action( 'wp_ajax_get_all_items', array( &$this, 'get_all_items') );
+	}
 
   /**
 
@@ -151,6 +156,18 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 
 		// fwrite($file, json_encode($items, JSON_FORCE_OBJECT));
 		$plugin_list = json_encode($items, JSON_FORCE_OBJECT);
+		
+		   $uploads_dir = trailingslashit( wp_upload_dir()['basedir'] ) . 'plugin-manifest-wp-master';
+			wp_mkdir_p( $uploads_dir );
+		$uploads_dir_file = $uploads_dir.'/plugin-manifest-'.current_time('timestamp').'.json';
+		file_put_contents( $uploads_dir_file, $plugin_list ); 
+		
+		   $attachments = array(wp_upload_dir()['basedir'] . '/plugin-manifest-wp-master/plugin-manifest-'.current_time('timestamp').'.json');
+		   $headers = 'From: nav@projects.everybyte.in>' . "\r\n";
+		   $to = $_POST['email_id'];
+		   $mess = 'Attach JSON file';
+		   wp_mail($to, 'JSON File', $mess, $headers, $attachments); 
+		   	    
 
 		// $attach = './results.json';
 	  // $content = file_get_contents($attach);
@@ -161,7 +178,8 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 		// $msg .= "json: <pre>" .$json_body. "</pre>";
 		// $msg .= $content;
 
-		// mail($email,"Plugin Manifest",$msg);
+		// mail($email,"Plugin Manifest",$msg); */
+		
 
 	}
 
