@@ -126,11 +126,11 @@ class Plugin_Manifest_Wp_Admin {
 			 */
 			public function display_options_page() {
 				include_once 'partials/plugin-manifest-wp-admin-display.php';
-				include_once 'partials/force-push-js.php';
+				include_once 'partials/plugin-manifest-wp-force-push-js.php';
 			}
 
 		/**
-			 * Render the options page for plugin
+			 * Create and register settings for plugin
 			 *
 			 * @since  1.0.0
 			 */
