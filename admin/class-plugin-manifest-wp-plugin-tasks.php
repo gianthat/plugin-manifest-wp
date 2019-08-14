@@ -169,8 +169,9 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 		$site = preg_replace('/^www\./','',$_SERVER['SERVER_NAME']);
 		$headers = 'From: <accounts@gianthatworks.com>' . "\r\n";
 		$to = $_POST['email_id'];
-		$mess = 'Plugin Manifest file from' . $site;
-		wp_mail($to, 'JSON File', $mess, $headers, $attachments);
+		$msg = 'Plugin Manifest file from ' . $site;
+		// $msg .= '<table>\n$thead\n$tbody\n</table>';
+		wp_mail($to, 'Plugin Manifest file from ' . $site, $msg, $headers, $attachments);
 	}
 
 	/**
