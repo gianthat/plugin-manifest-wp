@@ -380,8 +380,7 @@ class Plugin_Manifest_Wp_Admin {
 				 */
 				public function plugin_manifest_wp_force_push_cb() {
 					echo '<button class="button button-secondary button-large button-force mb-3" name="' . $this->option_name . '_force_push' . '" id="' . $this->option_name . '_force_push' . '">Force push</button>';
-					echo '<div class="sendmailsuccess">Mail Send Successfully</div>';
-					echo '<div id="plugin-list-json" class="result"><code>Hi! Your JSON sample will appear here.</code></div>';
+					echo '<div class="send-mail-success mt-3">Email Sent Successfully!</div>';
 				}
 
 }
