@@ -22,7 +22,14 @@
 }
 
 /* Email send response */
-.send-mail-success {
+.send-mail-result {
   display: none;
+}
+
+.send-mail-result.success {
   color: green;
+}
+
+.send-mail-result.error {
+  color: red;
 }

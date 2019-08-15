@@ -11,7 +11,10 @@
 					email_id : email_id,
 				},
 				success : function( response ) {
-					jQuery('.send-mail-success').css("display", "block");
+					jQuery('.send-mail-result.success').css("display", "block");
+				},
+				error : function( response ) {
+					jQuery('.send-mail-result.error').css("display", "block");
 				}
 			});
 		});
