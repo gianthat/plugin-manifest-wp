@@ -96,6 +96,7 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 				'title'          => $item_data['Title'],
 				'description'    => $description,
 				'status'         => 'dropin',
+				'version'        => $item_data['Version'],
 				'update'         => false,
 				'update_version' => null,
 				'update_package' => null,
@@ -170,7 +171,9 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 		$headers = 'From: <accounts@gianthatworks.com>' . "\r\n";
 		$to = $_POST['email_id'];
 		$msg = 'Plugin Manifest file from ' . $site;
-		// $msg .= '<table>\n$thead\n$tbody\n</table>';
+		$msg .= '<br>Plugin Manifest: ';
+		$msg .= '<br>';
+		// $msg .= HTML TABLE HERE
 		wp_mail($to, 'Plugin Manifest file from ' . $site, $msg, $headers, $attachments);
 	}
 
