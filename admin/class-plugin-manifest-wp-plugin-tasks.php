@@ -67,6 +67,45 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 	public function get_all_items() {
 		$items = $this->get_item_list();
 
+		$duplicate_names = [];
+
+		foreach ( $this->get_all_plugins() as $file => $details ) {
+			$all_update_info = $this->get_update_info();
+			$update_info = ( isset( $all_update_info->response[ $file ] ) && null !== $all_update_info->response[ $file ] ) ? (array) $all_update_info->response[ $file ] : null;
+			$name = $details['Name'];
+
+			if ( ! isset( $duplicate_names[ $name ] ) ) {
+				$duplicate_names[ $name ] = array();
+			}
+
+			$plugin_status = is_plugin_active($file); // is the plugin active?
+
+			$duplicate_names[ $name ][] = $file;
+			$items[ $file ]             = [
+				'name'           => $details['Name'],
+				'status'         => $plugin_status,
+				'update'         => (bool) $update_info,
+				'update_version' => $update_info['new_version'],
+				'update_package' => $update_info['package'],
+				'version'        => $details['Version'],
+				'update_id'      => $file,
+				'title'          => $details['Name'],
+				'description'    => wordwrap( $details['Description'] ),
+				'file'           => $file,
+			];
+
+			if ( null === $update_info ) {
+
+				// Get info for all plugins that don't have an update.
+				$plugin_update_info = isset( $all_update_info->no_update[ $file ] ) ? $all_update_info->no_update[ $file ] : null;
+
+				// Compare version and update information in plugin list.
+				if ( null !== $plugin_update_info && version_compare( $details['Version'], $plugin_update_info->new_version, '>' ) ) {
+					$items[ $file ]['update'] = 'version higher than expected';
+				}
+			}
+		}
+
 		foreach ( get_mu_plugins() as $file => $mu_plugin ) {
 			$mu_version = '';
 			if ( ! empty( $mu_plugin['Version'] ) ) {
@@ -107,45 +146,6 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 			];
 		}
 
-		$duplicate_names = [];
-
-		foreach ( $this->get_all_plugins() as $file => $details ) {
-			$all_update_info = $this->get_update_info();
-			$update_info = ( isset( $all_update_info->response[ $file ] ) && null !== $all_update_info->response[ $file ] ) ? (array) $all_update_info->response[ $file ] : null;
-			$name = $details['Name'];
-
-			if ( ! isset( $duplicate_names[ $name ] ) ) {
-				$duplicate_names[ $name ] = array();
-			}
-
-			$plugin_status = is_plugin_active($file); // is the plugin active?
-
-			$duplicate_names[ $name ][] = $file;
-			$items[ $file ]             = [
-				'name'           => $details['Name'],
-				'status'         => $plugin_status,
-				'update'         => (bool) $update_info,
-				'update_version' => $update_info['new_version'],
-				'update_package' => $update_info['package'],
-				'version'        => $details['Version'],
-				'update_id'      => $file,
-				'title'          => $details['Name'],
-				'description'    => wordwrap( $details['Description'] ),
-				'file'           => $file,
-			];
-
-			if ( null === $update_info ) {
-
-				// Get info for all plugins that don't have an update.
-				$plugin_update_info = isset( $all_update_info->no_update[ $file ] ) ? $all_update_info->no_update[ $file ] : null;
-
-				// Compare version and update information in plugin list.
-				if ( null !== $plugin_update_info && version_compare( $details['Version'], $plugin_update_info->new_version, '>' ) ) {
-					$items[ $file ]['update'] = 'version higher than expected';
-				}
-			}
-		}
-
 		foreach ( $duplicate_names as $name => $files ) {
 			if ( count( $files ) <= 1 ) {
 				continue;
@@ -176,11 +176,11 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 	 * Creates an email with JSON file attached.
 	 */
 		$attachments = array(wp_upload_dir()['basedir'] . '/plugin-manifest-wp/plugin-manifest-'.current_time('timestamp').'.json');
-		$site = preg_replace('/^www\./','',$_SERVER['SERVER_NAME']);
+		$site = get_bloginfo('name');
+		$site .= ' (' . get_bloginfo('home') . ')';
 		$headers = array('Content-Type: text/html; charset=UTF-8','From: <accounts@gianthatworks.com>' . "\r\n");
 		$to = $to_email;
 		$msg = 'Plugin Manifest file from ' . $site;
-		$msg .= '<br>Plugin Manifest: ';
 		$msg .= '<br>';
 		$msg .='<table width="100%" border="1" align="center" bordercolor="#ccc" cellspacing="0" cellpadding="8" style="font-family:Arial, Helvetica, sans-serif">
 		  <tr>
@@ -193,19 +193,33 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 		foreach($plugin_list_decode_list as $plugin_list_decode) {
 			$msg .='<tr>
 		    <td align="center" valign="middle">'.$plugin_list_decode->name.'</td>
+
 				<td align="center" valign="middle">';
-				if($plugin_list_decode->status == 1){
+				if($plugin_list_decode->status == 1) {
 					$status = 'Active';
 				}
-				elseif($plugin_list_decode->status == ''){
+				elseif($plugin_list_decode->status == '') {
 					$status = 'Inactive';
 				}
 				else{
 					$status = $plugin_list_decode->status;
 				}
+				$msg .=''.$status.'</td>
 
-		 $msg .=''.$status.'</td>
-				<td align="center" valign="middle">'.$plugin_list_decode->update.'</td>
+				<td align="center" valign="middle">'.$plugin_list_decode->version.'</td>
+
+				<td align="center" valign="middle">';
+				if($plugin_list_decode->update == 1) {
+					$update = 'Yes';
+				}
+				elseif($plugin_list_decode->update == '') {
+					$update = 'No';
+				}
+				else{
+					$update = $plugin_list_decode->update;
+				}
+				$msg .=''.$update.'</td>
+
 				<td align="center" valign="middle">';
 				if($plugin_list_decode->update_version == ''){
 					$update_version = '';
@@ -213,15 +227,14 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 				else{
 					$update_version = $plugin_list_decode->update_version;
 				}
+				$msg .=''.$update_version.'</td>
 
-			$msg .=''.$update_version.'</td>
-				<td align="center" valign="middle">'.$plugin_list_decode->version.'</td></tr>
-			';
+			</tr>';
 		}
 		$msg .='</table>';
 
 		// Email all of it.
-		wp_mail($to, 'Plugin Manifest file from ' . $site, $msg, $headers, $attachments);
+		wp_mail($to, 'Plugin Manifest from ' . $site, $msg, $headers, $attachments);
 	}
 
 
