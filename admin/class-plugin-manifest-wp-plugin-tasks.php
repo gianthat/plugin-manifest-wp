@@ -36,10 +36,12 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
   protected function get_upgrader_class( $force ) {}
 
   protected function get_item_list() {}
-  
+
   public function __construct() {
 		add_action( 'wp_ajax_nopriv_get_all_items', array( &$this,'get_all_items') );
 		add_action( 'wp_ajax_get_all_items', array( &$this, 'get_all_items') );
+		add_action('init', array( &$this,'manifest_cron_mail'));
+		add_action ('manifest_crons', array( &$this, 'get_all_items'));
 	}
 
   /**
@@ -109,8 +111,8 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 
 		foreach ( $this->get_all_plugins() as $file => $details ) {
 			$all_update_info = $this->get_update_info();
-			$update_info     = ( isset( $all_update_info->response[ $file ] ) && null !== $all_update_info->response[ $file ] ) ? (array) $all_update_info->response[ $file ] : null;
-			$name 					 = $details['Name'];
+			$update_info = ( isset( $all_update_info->response[ $file ] ) && null !== $all_update_info->response[ $file ] ) ? (array) $all_update_info->response[ $file ] : null;
+			$name = $details['Name'];
 
 			if ( ! isset( $duplicate_names[ $name ] ) ) {
 				$duplicate_names[ $name ] = array();
@@ -153,7 +155,14 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 			}
 		}
 
+		// Encode Plugin List
 		$plugin_list = json_encode($items, JSON_FORCE_OBJECT);
+
+		// Then decode it
+		$plugin_list_decode_list = json_decode($plugin_list);
+
+		// Who should get the email? This one.
+		$to_email = get_option( 'plugin_manifest_wp_email_address' );
 
 	/**
 	 * Adds a new directory in uploads and puts the JSON file in there.
@@ -168,14 +177,65 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 	 */
 		$attachments = array(wp_upload_dir()['basedir'] . '/plugin-manifest-wp/plugin-manifest-'.current_time('timestamp').'.json');
 		$site = preg_replace('/^www\./','',$_SERVER['SERVER_NAME']);
-		$headers = 'From: <accounts@gianthatworks.com>' . "\r\n";
-		$to = $_POST['email_id'];
+		$headers = array('Content-Type: text/html; charset=UTF-8','From: <accounts@gianthatworks.com>' . "\r\n");
+		$to = $to_email;
 		$msg = 'Plugin Manifest file from ' . $site;
 		$msg .= '<br>Plugin Manifest: ';
 		$msg .= '<br>';
-		// $msg .= HTML TABLE HERE
+		$msg .='<table width="100%" border="1" align="center" bordercolor="#ccc" cellspacing="0" cellpadding="8" style="font-family:Arial, Helvetica, sans-serif">
+		  <tr>
+			<th>Plugin Name</th>
+			<th>Status</th>
+			<th>Version</th>
+			<th>Update Available</th>
+			<th>Update Version</th>
+		  </tr>';
+		foreach($plugin_list_decode_list as $plugin_list_decode) {
+			$msg .='<tr>
+		    <td align="center" valign="middle">'.$plugin_list_decode->name.'</td>
+				<td align="center" valign="middle">';
+				if($plugin_list_decode->status == 1){
+					$status = 'Active';
+				}
+				elseif($plugin_list_decode->status == ''){
+					$status = 'Inactive';
+				}
+				else{
+					$status = $plugin_list_decode->status;
+				}
+
+		 $msg .=''.$status.'</td>
+				<td align="center" valign="middle">'.$plugin_list_decode->update.'</td>
+				<td align="center" valign="middle">';
+				if($plugin_list_decode->update_version == ''){
+					$update_version = '';
+				}
+				else{
+					$update_version = $plugin_list_decode->update_version;
+				}
+
+			$msg .=''.$update_version.'</td>
+				<td align="center" valign="middle">'.$plugin_list_decode->version.'</td></tr>
+			';
+		}
+		$msg .='</table>';
+
+		// Email all of it.
 		wp_mail($to, 'Plugin Manifest file from ' . $site, $msg, $headers, $attachments);
 	}
+
+
+	/**
+	 * Checks for and creates the scheduled event.
+	 *
+	 * @param object
+	 * @return bool
+	 */
+	function manifest_cron_mail() {
+			if( !wp_next_scheduled( 'manifest_crons' ) ) {
+				wp_schedule_event( time(), get_option( 'plugin_manifest_wp_frequency' ), 'manifest_crons' );
+			}
+		}
 
 	/**
 	 * Gets the details of a plugin.
@@ -211,4 +271,5 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 	protected function get_update_info() {
 		return get_site_transient( $this->upgrade_transient );
 	}
+
 }
