@@ -54,13 +54,39 @@ function plugin_manifest_wp_settings_link( $actions ) {
 add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'plugin_manifest_wp_settings_link', 10, 5);
 
 /**
+ * Adds some custom cron schedule options.
+ */
+function pm_wp_add_schedules( $schedules ) {
+  // add a 'weekly' schedule to the existing set
+  $schedules['weekly'] = array(
+    'interval' => 604800,
+    'display' => __('Once Weekly')
+  );
+  // add a 'bi-weekly' schedule to the existing set
+  $schedules['bi_weekly'] = array(
+    'interval' => 1209600,
+    'display' => __('Bi-weekly')
+  );
+  // add a 'monthly' schedule to the existing set
+  $schedules['monthly'] = array(
+    'interval' => 2635200,
+    'display' => __('Once a month')
+  );
+  return $schedules;
+}
+add_filter( 'cron_schedules', 'pm_wp_add_schedules' );
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-plugin-manifest-wp-activator.php
  */
 function activate_plugin_manifest_wp() {
+
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-plugin-manifest-wp-activator.php';
+
 	Plugin_Manifest_Wp_Activator::activate();
-  if ( is_plugin_active( plugin_basename(__FILE__)))
+
+    if ( is_plugin_active( plugin_basename(__FILE__)))
     {
         deactivate_plugins( plugin_basename(__FILE__)) ;
         // Hide the default "Plugin activated" notice
@@ -70,6 +96,11 @@ function activate_plugin_manifest_wp() {
         }
     }
 }
+
+/**
+ *
+ * This action is documented in includes/class-plugin-manifest-wp-activator.php
+ */
 
 /**
  * The code that runs during plugin deactivation.
