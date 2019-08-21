@@ -149,7 +149,7 @@ class Plugin_Manifest_Wp_Admin {
 					// Add Radio buttons for Frequency
 						add_settings_field(
 							$this->option_name . '_frequency',
-							__( 'Push frequency', 'plugin-manifest-wp' ),
+							__( 'Run frequency', 'plugin-manifest-wp' ),
 							array( $this, $this->option_name . '_frequency_cb' ),
 							$this->plugin_name . '_settings',
 							$this->option_name . '_general',
@@ -159,7 +159,7 @@ class Plugin_Manifest_Wp_Admin {
 					// Add Radio buttons for Frequency
 						add_settings_field(
 							$this->option_name . '_day',
-							__( 'Preferred day for push', 'plugin-manifest-wp' ),
+							__( 'Next run date', 'plugin-manifest-wp' ),
 							array( $this, $this->option_name . '_day_cb' ),
 							$this->plugin_name . '_settings',
 							$this->option_name . '_general',
@@ -191,7 +191,7 @@ class Plugin_Manifest_Wp_Admin {
 				//
 
 				register_setting( $this->plugin_name, $this->option_name . '_frequency', array( $this, $this->option_name . '_sanitize_frequency' ) );
-				register_setting( $this->plugin_name, $this->option_name . '_day', array( $this, $this->option_name . '_sanitize_day' ) );
+				register_setting( $this->plugin_name, $this->option_name . '_day', 'string' );
 				register_setting( $this->plugin_name, $this->option_name . '_license_key', 'string' );
 				register_setting( $this->plugin_name, $this->option_name . '_email_address', 'string' );
 
@@ -258,7 +258,7 @@ class Plugin_Manifest_Wp_Admin {
 						</label>
 						<br>
 						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_frequency' ?>" value="biweekly" <?php checked( $frequency, 'biweekly' ); ?>>
+							<input type="radio" name="<?php echo $this->option_name . '_frequency' ?>" value="bi_weekly" <?php checked( $frequency, 'bi_weekly' ); ?>>
 							<?php _e( 'Bi-weekly', 'plugin-manifest-wp' ); ?>
 						</label>
 						<br>
@@ -277,44 +277,7 @@ class Plugin_Manifest_Wp_Admin {
 			 */
 			public function plugin_manifest_wp_day_cb() {
 				$day = get_option( $this->option_name . '_day' );
-				?>
-					<fieldset>
-						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" id="<?php echo $this->option_name . '_day' ?>" value="monday" <?php checked( $day, 'monday' ); ?>>
-							<?php _e( 'Monday', 'plugin-manifest-wp' ); ?>
-						</label>
-						<br>
-						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="tuesday" <?php checked( $day, 'tuesday' ); ?>>
-							<?php _e( 'Tuesday', 'plugin-manifest-wp' ); ?>
-						</label>
-						<br>
-						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="wednesday" <?php checked( $day, 'wednesday' ); ?>>
-							<?php _e( 'Wednesday', 'plugin-manifest-wp' ); ?>
-						</label>
-						<br>
-						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="thursday" <?php checked( $day, 'thursday' ); ?>>
-							<?php _e( 'Thursday', 'plugin-manifest-wp' ); ?>
-						</label>
-						<br>
-						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="friday" <?php checked( $day, 'friday' ); ?>>
-							<?php _e( 'Friday', 'plugin-manifest-wp' ); ?>
-						</label>
-						<br>
-						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="saturday" <?php checked( $day, 'saturday' ); ?>>
-							<?php _e( 'Saturday', 'plugin-manifest-wp' ); ?>
-						</label>
-						<br>
-						<label>
-							<input type="radio" name="<?php echo $this->option_name . '_day' ?>" value="sunday" <?php checked( $day, 'sunday' ); ?>>
-							<?php _e( 'Sunday', 'plugin-manifest-wp' ); ?>
-						</label>
-					</fieldset>
-				<?php
+				echo '<input type="date" name="' . $this->option_name . '_day' . '" id="' . $this->option_name . '_day' . '" value="' . $day . '" min="' . date('Y-m-d') . '">';
 			}
 
 			/**
@@ -346,21 +309,8 @@ class Plugin_Manifest_Wp_Admin {
 				 * @return string           Sanitized value
 				 */
 				public function plugin_manifest_wp_sanitize_frequency( $frequency ) {
-					if ( in_array( $frequency, array( 'daily', 'weekly', 'biweekly', 'monthly' ), true ) ) {
+					if ( in_array( $frequency, array( 'daily', 'weekly', 'bi_weekly', 'monthly' ), true ) ) {
 				        return $frequency;
-				    }
-				}
-
-			/**
-				 * Sanitize the text Day value before being saved to database
-				 *
-				 * @param  string $_day $_POST value
-				 * @since  1.0.0
-				 * @return string           Sanitized value
-				 */
-				public function plugin_manifest_wp_sanitize_day( $day ) {
-					if ( in_array( $day, array( 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday' ), true ) ) {
-				        return $day;
 				    }
 				}
 
