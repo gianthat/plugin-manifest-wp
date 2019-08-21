@@ -1,3 +1,4 @@
+* updated options, labels, finalized cron functionality
 * added email table
 * makes readme better, changes author info
 * cleans up WIP code
