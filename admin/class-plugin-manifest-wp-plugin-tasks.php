@@ -173,15 +173,16 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 		file_put_contents( $uploads_dir_file, $plugin_list ); // put the file in the new directory
 
 	/**
-	 * Creates an email with JSON file attached.
+	 * Creates an email with HTML table in body and JSON file attached.
 	 */
 		$attachments = array(wp_upload_dir()['basedir'] . '/plugin-manifest-wp/plugin-manifest-'.current_time('timestamp').'.json');
-		$site = get_bloginfo('name');
-		$site .= ' (' . get_bloginfo('home') . ')';
-		$headers = array('Content-Type: text/html; charset=UTF-8','From: <accounts@gianthatworks.com>' . "\r\n");
+		$site_name = get_bloginfo('name');
+		$admin_email = get_option('admin_email');
+		$site = $site_name . ' (' . get_bloginfo('url') . ')';
+		$headers = array('Content-Type: text/html; charset=UTF-8','From: ' . $site_name . ' <' . $admin_email . '>' . "\r\n");
 		$to = $to_email;
-		$msg = 'Plugin Manifest file from ' . $site;
-		$msg .= '<br>';
+		$msg = '<h1>Plugin Manifest file from ' . $site;
+		$msg .= '</h1><br><br>';
 		$msg .='<table width="100%" border="1" align="center" bordercolor="#ccc" cellspacing="0" cellpadding="8" style="font-family:Arial, Helvetica, sans-serif">
 		  <tr>
 			<th>Plugin Name</th>
