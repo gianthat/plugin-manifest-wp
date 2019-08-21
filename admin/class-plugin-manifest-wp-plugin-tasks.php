@@ -40,8 +40,8 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
   public function __construct() {
 		add_action( 'wp_ajax_nopriv_get_all_items', array( &$this,'get_all_items') );
 		add_action( 'wp_ajax_get_all_items', array( &$this, 'get_all_items') );
-		add_action('init', array( &$this,'manifest_cron_mail'));
-		add_action ('manifest_crons', array( &$this, 'get_all_items'));
+		add_action( 'init', array( &$this,'manifest_cron_mail' ) );
+		add_action( 'manifest_crons', array( &$this, 'get_all_items' ) );
 	}
 
   /**
@@ -245,10 +245,10 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 	 * @return bool
 	 */
 	function manifest_cron_mail() {
-			if( !wp_next_scheduled( 'manifest_crons' ) ) {
-				wp_schedule_event( time(), get_option( 'plugin_manifest_wp_frequency' ), 'manifest_crons' );
-			}
+		if( !wp_next_scheduled( 'manifest_crons' ) ) {
+			wp_schedule_event( time(), get_option( 'plugin_manifest_wp_frequency' ), 'manifest_crons' );
 		}
+	}
 
 	/**
 	 * Gets the details of a plugin.
