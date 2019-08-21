@@ -22,21 +22,4 @@ class Plugin_Manifest_Wp_Activator {
 	public static function activate() {
 
 	}
-  
-  public function is_requirements_met() {
-      $min_wp = '4.6' ; // minimum WP version
-      $min_php = '7.1' ; // minimum PHP version
-      // Check for WordPress version
-      if ( version_compare( get_bloginfo('version'), $min_wp, '>' ))
-      {
-          return false ;
-      }
-      // Check the PHP version
-      if ( version_compare(PHP_VERSION, $min_php, '>'))
-      {
-          return false ;
-      }
-      return true ;
-  }
-
 }

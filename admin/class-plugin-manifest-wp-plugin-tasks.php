@@ -41,7 +41,7 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 		add_action( 'wp_ajax_nopriv_get_all_items', array( &$this,'get_all_items') );
 		add_action( 'wp_ajax_get_all_items', array( &$this, 'get_all_items') );
 		add_action( 'init', array( &$this,'manifest_cron_mail' ) );
-		add_action( 'manifest_crons', array( &$this, 'get_all_items' ) );
+		add_action( 'plugin_manifest_wp_cron', array( &$this, 'get_all_items' ) );
 	}
 
   /**
@@ -245,8 +245,12 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 	 * @return bool
 	 */
 	function manifest_cron_mail() {
-		if( !wp_next_scheduled( 'manifest_crons' ) ) {
-			wp_schedule_event( time(), get_option( 'plugin_manifest_wp_frequency' ), 'manifest_crons' );
+		$next_run = get_option( 'plugin_manifest_wp_day' );
+		$next_run = strtotime( $next_run );
+		$schedule = get_option( 'plugin_manifest_wp_frequency' );
+		if ( wp_next_scheduled( 'plugin_manifest_wp_cron' ) ) {
+			wp_clear_scheduled_hook('plugin_manifest_wp_cron');
+			wp_schedule_event( $next_run, $schedule, 'plugin_manifest_wp_cron' );
 		}
 	}
 
