@@ -20,7 +20,6 @@ class Plugin_Manifest_Wp_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+    wp_clear_scheduled_hook('plugin_manifest_wp_cron');
 	}
-
 }
