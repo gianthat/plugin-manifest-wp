@@ -1,3 +1,4 @@
+* added separate sections for settings, license, and tools
 * updated options, labels, finalized cron functionality
 * added email table
 * makes readme better, changes author info

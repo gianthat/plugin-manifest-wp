@@ -16,7 +16,7 @@
  * Plugin Name:       Plugin Manifest
  * Plugin URI:        pluginmanifest-wp.com
  * Description:       See WordPress plugin status at a glance, whenever, wherever.
- * Version:           1.0.0-alpha.1
+ * Version:           1.0.0-alpha.2
  * Author:            1905 New Media
  * Author URI:        1905newmedia.com
  * License:           GPL-2.0+
@@ -32,10 +32,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
  */
-define( 'PLUGIN_MANIFEST_WP_VERSION', '1.0.0-alpha.1' );
+define( 'PLUGIN_MANIFEST_WP_VERSION', '1.0.0-alpha.2' );
 
 /**
  * Adds a link to the plugins page for easy access to PM-WP Settings.
@@ -52,6 +50,17 @@ function plugin_manifest_wp_settings_link( $actions ) {
 }
 
 add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'plugin_manifest_wp_settings_link', 10, 5);
+
+function sample_admin_notice__error() {
+  $class = 'notice notice-warning is-dismissible';
+  $help_link = __('<a href="https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/#mac-os-x-and-linux" target="_blank">You will need to hook WP-CRON into your system\'s task scheduler.</a>');
+  $message = __( 'WP-CRON is disabled. This plugin relies on a scheduled cron event. ' . $help_link );
+
+  if (DISABLE_WP_CRON) :
+    printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message ); 
+  endif;
+}
+add_action( 'admin_notices', 'sample_admin_notice__error' );
 
 /**
  * Adds some custom cron schedule options.
