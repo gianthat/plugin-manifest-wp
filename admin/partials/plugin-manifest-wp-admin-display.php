@@ -17,26 +17,56 @@
 <div class="wrap">
 
   <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
+  <?php
+    if( isset( $_GET[ 'tab' ] ) ) {
+      $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'settings';
+    }
+  ?>
+  <?php settings_errors(); ?>
+
+    <div class="nav-tab-wrapper">
+
+      <a href="?page=plugin-manifest-wp&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>">Settings</a>
+      <a href="?page=plugin-manifest-wp&tab=license" class="nav-tab <?php echo $active_tab == 'license' ? 'nav-tab-active' : ''; ?>">License</a>
+      <a href="?page=plugin-manifest-wp&tab=tools" class="nav-tab <?php echo $active_tab == 'tools' ? 'nav-tab-active' : ''; ?>">Tools</a>
+
+    </div>
 
     <form action="options.php" method="post">
 
       <?php
-        settings_fields( $this->plugin_name );
-        do_settings_sections( $this->plugin_name . '_settings' );
-        submit_button();
+
+        if( $active_tab == 'settings' ) {
+
+          settings_fields( $this->plugin_name );
+          do_settings_sections( $this->plugin_name . '_settings' );
+
+        } elseif( $active_tab == 'license' ) {
+
+          settings_fields( $this->plugin_name );
+          do_settings_sections( $this->plugin_name . '_license' );
+
+        }
+
+        if( $active_tab == 'settings' || $active_tab == 'license' ) {
+
+          submit_button();
+
+        }
+
       ?>
 
     </form>
 
-    <hr/>
+    <?php
 
-    <!-- <form action="admin-ajax.php" method="post"> -->
+      if( $active_tab == 'tools' ) {
 
-      <?php
-        settings_fields( $this->plugin_name );
-        do_settings_sections( $this->plugin_name . '_options' );
-      ?>
+          settings_fields( $this->plugin_name );
+          do_settings_sections( $this->plugin_name . '_options' );
 
-    <!-- </form> -->
+        }
+
+    ?>
 
 </div>
