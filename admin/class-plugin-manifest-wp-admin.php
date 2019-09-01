@@ -109,14 +109,13 @@ class Plugin_Manifest_Wp_Admin {
 		 */
 		public function add_options_page() {
 
-			$this->plugin_screen_hook_suffix = add_options_page(
-				__( 'Plugin Manifest Settings', 'plugin-manifest-wp' ),
-				__( 'Plugin Manifest', 'plugin-manifest-wp' ),
-				'manage_options',
-				$this->plugin_name,
-				array( $this, 'display_options_page' )
-			);
+			$page_title = __( 'Plugin Manifest Settings', 'plugin-manifest-wp' );
+			$menu_title = __( 'Plugin Manifest', 'plugin-manifest-wp' );
+			$capability = 'manage_options';
+			$slug				=	$this->plugin_name;
+			$callback   = array( $this, 'display_options_page' );
 
+			$this->plugin_screen_hook_suffix = add_options_page( $page_title, $menu_title, $capability, $slug, $callback );
 		}
 
 		/**
@@ -140,54 +139,68 @@ class Plugin_Manifest_Wp_Admin {
 				// Add a General section
 				//
 					add_settings_section(
-						$this->option_name . '_general', // TODO Might rename this more specifically later
+						$this->option_name . '_general',
 						__( 'General', 'plugin-manifest-wp' ),
 						array( $this, $this->option_name . '_general_cb' ),
 						$this->plugin_name . '_settings'
 					);
 
-					// Add Radio buttons for Frequency
-						add_settings_field(
-							$this->option_name . '_frequency',
-							__( 'Run frequency', 'plugin-manifest-wp' ),
-							array( $this, $this->option_name . '_frequency_cb' ),
-							$this->plugin_name . '_settings',
-							$this->option_name . '_general',
-							array( 'label_for' => $this->option_name . '_frequency' )
-						);
+						// Add Radio buttons for Frequency
+							add_settings_field(
+								$this->option_name . '_frequency',
+								__( 'Run frequency', 'plugin-manifest-wp' ),
+								array( $this, $this->option_name . '_frequency_cb' ),
+								$this->plugin_name . '_settings',
+								$this->option_name . '_general',
+								array( 'label_for' => $this->option_name . '_frequency' )
+							);
 
-					// Add Radio buttons for Frequency
-						add_settings_field(
-							$this->option_name . '_day',
-							__( 'Next run date', 'plugin-manifest-wp' ),
-							array( $this, $this->option_name . '_day_cb' ),
-							$this->plugin_name . '_settings',
-							$this->option_name . '_general',
-							array( 'label_for' => $this->option_name . '_day' )
-						);
+						// Add Radio buttons for Frequency
+							add_settings_field(
+								$this->option_name . '_day',
+								__( 'Next run date', 'plugin-manifest-wp' ),
+								array( $this, $this->option_name . '_day_cb' ),
+								$this->plugin_name . '_settings',
+								$this->option_name . '_general',
+								array( 'label_for' => $this->option_name . '_day' )
+							);
+
+						// Add input field for Email address
+							add_settings_field(
+								$this->option_name . '_email_address',
+								__( 'Email Address', 'plugin-manifest-wp' ),
+								array( $this, $this->option_name . '_email_address_cb' ),
+								$this->plugin_name . '_settings',
+								$this->option_name . '_general',
+								array( 'label_for' => $this->option_name . '_email_address' )
+							);
+
+				//
+				// End General Setting section
+				//
+
+				//
+				// Add a License section
+				//
+					add_settings_section(
+						$this->option_name . '_license',
+						__( 'License', 'plugin-manifest-wp' ),
+						array( $this, $this->option_name . '_license_cb' ),
+						$this->plugin_name . '_license'
+					);
 
 					// Add input field for License Key
 						add_settings_field(
 							$this->option_name . '_license_key',
 							__( 'License Key', 'plugin-manifest-wp' ),
 							array( $this, $this->option_name . '_license_key_cb' ),
-							$this->plugin_name . '_settings',
-							$this->option_name . '_general',
+							$this->plugin_name . '_license',
+							$this->option_name . '_license',
 							array( 'label_for' => $this->option_name . '_license_key' )
 						);
 
-					// Add input field for Email address
-						add_settings_field(
-							$this->option_name . '_email_address',
-							__( 'Email Address', 'plugin-manifest-wp' ),
-							array( $this, $this->option_name . '_email_address_cb' ),
-							$this->plugin_name . '_settings',
-							$this->option_name . '_general',
-							array( 'label_for' => $this->option_name . '_email_address' )
-						);
-
 				//
-				// End General Setting section
+				// End License Setting section
 				//
 
 				register_setting( $this->plugin_name, $this->option_name . '_frequency', array( $this, $this->option_name . '_sanitize_frequency' ) );
@@ -278,6 +291,15 @@ class Plugin_Manifest_Wp_Admin {
 			public function plugin_manifest_wp_day_cb() {
 				$day = get_option( $this->option_name . '_day' );
 				echo '<input type="date" name="' . $this->option_name . '_day' . '" id="' . $this->option_name . '_day' . '" value="' . $day . '" min="' . date('Y-m-d') . '">';
+			}
+
+		/**
+			 * Render the text for the License section
+			 *
+			 * @since  1.0.0
+			 */
+			public function plugin_manifest_wp_license_cb() {
+				echo '<p>' . __( 'Add your license key here.', 'plugin-manifest-wp' ) . '</p>';
 			}
 
 			/**
