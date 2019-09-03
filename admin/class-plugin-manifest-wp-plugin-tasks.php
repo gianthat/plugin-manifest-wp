@@ -165,6 +165,13 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 		$to_email = get_option( 'plugin_manifest_wp_email_address' );
 
 	/**
+	 * WordPress Core info
+	 */
+		$wp_version = get_bloginfo( 'version' );
+		$wp_core_updates = get_core_updates();
+		$wp_core_msg = '<p>WordPress version <strong>' . $wp_version . '</strong> is installed.</p>';
+
+	/**
 	 * Adds a new directory in uploads and puts the JSON file in there.
 	 */
 		$uploads_dir = trailingslashit( wp_upload_dir()['basedir'] ) . 'plugin-manifest-wp';
@@ -177,65 +184,104 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 	 */
 		$attachments = array(wp_upload_dir()['basedir'] . '/plugin-manifest-wp/plugin-manifest-'.current_time('timestamp').'.json');
 		$site_name = get_bloginfo('name');
+		$site_url = get_bloginfo('url');
 		$admin_email = get_option('admin_email');
-		$site = $site_name . ' (' . get_bloginfo('url') . ')';
 		$headers = array('Content-Type: text/html; charset=UTF-8','From: ' . $site_name . ' <' . $admin_email . '>' . "\r\n");
 		$to = $to_email;
-		$msg = '<h1>Plugin Manifest file from ' . $site;
-		$msg .= '</h1><br><br>';
-		$msg .='<table width="100%" border="1" align="center" bordercolor="#ccc" cellspacing="0" cellpadding="8" style="font-family:Arial, Helvetica, sans-serif">
-		  <tr>
+		$msg = '<h1>Plugin Manifest for ' . $site_name;
+		$msg .= '<br><span style="font-size:0.75em;"><a href="' . $site_url . '">' . $site_url . '</a></span>'; 
+		$msg .= '</h1>';
+		$msg .= '<h2>WordPress Summary</h2>';
+		$msg .= $wp_core_msg;
+
+		if ( ! isset( $wp_core_updates[0]->response ) || 'latest' == $wp_core_updates[0]->response ) {
+			$msg .= '<p>';
+			$msg .= 'This is the latest version of WordPress. 👍';
+			$msg .= '</p>';
+		} else {
+			$wp_core_update_version = $wp_core_updates[0]->version;
+			$msg .= '<p>';
+			$msg .= 'An updated version of WordPress is available: ';
+			$msg .= '<strong>' . $wp_core_update_version . '</strong>';
+			$msg .= '</p>';
+		}
+
+		$msg .= '<h2>Plugin Manifest</h2>';
+		$msg .= '<table width="100%" border="1" align="center" cellspacing="0" cellpadding="8" style="font-family:Arial, Helvetica, sans-serif; border-width: 1px; border-collapse: collapse; border-color: #ddd;">
+		  <tr style="background:lightgray;">
 			<th>Plugin Name</th>
 			<th>Status</th>
 			<th>Version</th>
 			<th>Update Available</th>
 			<th>Update Version</th>
 		  </tr>';
+
 		foreach($plugin_list_decode_list as $plugin_list_decode) {
-			$msg .='<tr>
-		    <td align="center" valign="middle">'.$plugin_list_decode->name.'</td>
+
+			if($plugin_list_decode->update == 1) {
+				$tr_style = 'style="background:#d2ffd2;"';
+			} elseif($plugin_list_decode->update == '') {
+				$tr_style = 'style="background:#f1f1f1;"';
+			}
+
+			$msg .= '<tr ' . $tr_style . '>
+
+		    <td align="center" valign="middle">' . $plugin_list_decode->name . '</td>
 
 				<td align="center" valign="middle">';
-				if($plugin_list_decode->status == 1) {
-					$status = 'Active';
-				}
-				elseif($plugin_list_decode->status == '') {
-					$status = 'Inactive';
-				}
-				else{
-					$status = $plugin_list_decode->status;
-				}
-				$msg .=''.$status.'</td>
 
-				<td align="center" valign="middle">'.$plugin_list_decode->version.'</td>
+					if($plugin_list_decode->status == 1) {
+						$status = 'Active';
+					}
+					elseif($plugin_list_decode->status == '') {
+						$status = 'Inactive';
+					}
+					else{
+						$status = $plugin_list_decode->status;
+					}
 
-				<td align="center" valign="middle">';
-				if($plugin_list_decode->update == 1) {
-					$update = 'Yes';
-				}
-				elseif($plugin_list_decode->update == '') {
-					$update = 'No';
-				}
-				else{
-					$update = $plugin_list_decode->update;
-				}
-				$msg .=''.$update.'</td>
+					$msg .= $status;
+
+				$msg .= '</td>
+
+				<td align="center" valign="middle">' . $plugin_list_decode->version . '</td>
 
 				<td align="center" valign="middle">';
-				if($plugin_list_decode->update_version == ''){
-					$update_version = '';
-				}
-				else{
-					$update_version = $plugin_list_decode->update_version;
-				}
-				$msg .=''.$update_version.'</td>
+
+					if($plugin_list_decode->update == 1) {
+						$update = 'Yes';
+					}
+					elseif($plugin_list_decode->update == '') {
+						$update = 'No';
+					}
+					else {
+						$update = $plugin_list_decode->update;
+					}
+
+					$msg .= $update;
+
+				$msg .= '</td>
+
+				<td align="center" valign="middle">';
+
+					if($plugin_list_decode->update_version == ''){
+						$update_version = '';
+					}
+					else {
+						$update_version = $plugin_list_decode->update_version;
+					}
+
+					$msg .= $update_version;
+
+				$msg .= '</td>
 
 			</tr>';
 		}
-		$msg .='</table>';
+
+		$msg .= '</table>';
 
 		// Email all of it.
-		wp_mail($to, 'Plugin Manifest from ' . $site, $msg, $headers, $attachments);
+		wp_mail($to, 'Plugin Manifest for ' . $site_name, $msg, $headers, $attachments);
 	}
 
 
