@@ -12,16 +12,15 @@
  * @subpackage Plugin_Manifest_Wp/admin/partials
  */
 ?>
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <div class="wrap">
 
   <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
+
   <?php
-    if( isset( $_GET[ 'tab' ] ) ) {
-      $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'settings';
-    }
+    $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'settings';
   ?>
+
   <?php settings_errors(); ?>
 
     <div class="nav-tab-wrapper">
