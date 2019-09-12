@@ -3,7 +3,7 @@ Contributors: reidelliott
 Donate link: gianthatworks.com
 Tags: dashboard, TODO TODO
 Requires at least: 4.9.0
-Tested up to: 5.2.2
+Tested up to: 5.2.3
 Requires PHP: 7.1
 Stable tag: 5.2.2
 License: GPLv2 or later

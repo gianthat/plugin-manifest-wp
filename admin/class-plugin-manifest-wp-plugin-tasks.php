@@ -196,7 +196,7 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 
 		if ( ! isset( $wp_core_updates[0]->response ) || 'latest' == $wp_core_updates[0]->response ) {
 			$msg .= '<p>';
-			$msg .= 'This is the latest version of WordPress. 👍';
+			$msg .= 'This is the latest version of WordPress!';
 			$msg .= '</p>';
 		} else {
 			$wp_core_update_version = $wp_core_updates[0]->version;
