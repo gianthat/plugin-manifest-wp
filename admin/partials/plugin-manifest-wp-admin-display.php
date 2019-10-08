@@ -21,8 +21,6 @@
     $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'settings';
   ?>
 
-  <?php settings_errors(); ?>
-
     <div class="nav-tab-wrapper">
 
       <a href="?page=plugin-manifest-wp&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>">Settings</a>
