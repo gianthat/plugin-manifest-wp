@@ -51,16 +51,16 @@ function plugin_manifest_wp_settings_link( $actions ) {
 
 add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'plugin_manifest_wp_settings_link', 10, 5);
 
-function sample_admin_notice__error() {
+function wpcron_admin_notice__error() {
   $class = 'notice notice-warning is-dismissible';
   $help_link = __('<a href="https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/#mac-os-x-and-linux" target="_blank">You will need to hook WP-CRON into your system\'s task scheduler.</a>');
-  $message = __( 'WP-CRON is disabled. This plugin relies on a scheduled cron event. ' . $help_link );
+  $message = __( 'WP-CRON is disabled. Plugin Manifest relies on a scheduled cron event. ' . $help_link );
 
   if (DISABLE_WP_CRON) :
     printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message ); 
   endif;
 }
-add_action( 'admin_notices', 'sample_admin_notice__error' );
+add_action( 'admin_notices', 'wpcron_admin_notice__error' );
 
 /**
  * Adds some custom cron schedule options.
