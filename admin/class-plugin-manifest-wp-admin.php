@@ -290,7 +290,7 @@ class Plugin_Manifest_Wp_Admin {
 			 */
 			public function plugin_manifest_wp_day_cb() {
 				$day = get_option( $this->option_name . '_day' );
-				echo '<input type="date" name="' . $this->option_name . '_day' . '" id="' . $this->option_name . '_day' . '" value="' . $day . '" min="' . date('Y-m-d') . '">';
+				echo '<input type="date" name="' . $this->option_name . '_day' . '" id="' . $this->option_name . '_day' . '" value="' . $day . '" min="' . date('Y-m-d') . '"><p>Next date to run relative relative to the last change of plugin settings.</p>';
 			}
 
 		/**
@@ -320,7 +320,7 @@ class Plugin_Manifest_Wp_Admin {
 				 */
 				public function plugin_manifest_wp_email_address_cb() {
 					$email_address = get_option( $this->option_name . '_email_address' );
-					echo '<input type="text" size="80" name="' . $this->option_name . '_email_address' . '" id="' . $this->option_name . '_email_address' . '" value="' . $email_address . '">';
+					echo '<input placeholder="email@domain.com" type="text" size="80" name="' . $this->option_name . '_email_address' . '" id="' . $this->option_name . '_email_address' . '" value="' . $email_address . '"><p>Comma-separated list is allowed.</p>';
 				}
 
 			/**

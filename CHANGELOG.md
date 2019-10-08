@@ -1,3 +1,7 @@
+### 1.0.1 October 8, 2019
+* Tweak: Updates cron notice text
+
+### Alpha Releases
 * added WP info and some styles to email
 * added separate sections for settings, license, and tools
 * updated options, labels, finalized cron functionality

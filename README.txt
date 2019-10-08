@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: reidelliott
 Donate link: gianthatworks.com
-Tags: dashboard, TODO TODO
+Tags: dashboard, maintenance, updates
 Requires at least: 4.9.0
 Tested up to: 5.2.3
 Requires PHP: 7.1

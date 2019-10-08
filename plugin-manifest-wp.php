@@ -16,7 +16,7 @@
  * Plugin Name:       Plugin Manifest
  * Plugin URI:        pluginmanifest-wp.com
  * Description:       See WordPress plugin status at a glance, whenever, wherever.
- * Version:           1.0.0-alpha.5
+ * Version:           1.0.1
  * Author:            1905 New Media
  * Author URI:        1905newmedia.com
  * License:           GPL-2.0+
@@ -33,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Currently plugin version.
  */
-define( 'PLUGIN_MANIFEST_WP_VERSION', '1.0.0-alpha.5' );
+define( 'PLUGIN_MANIFEST_WP_VERSION', '1.0.1' );
 
 /**
  * Adds a link to the plugins page for easy access to PM-WP Settings.
