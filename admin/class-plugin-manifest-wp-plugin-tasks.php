@@ -190,9 +190,24 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 	 */
 		$attachments = array(wp_upload_dir()['basedir'] . '/plugin-manifest-wp/plugin-manifest-'.current_time('timestamp').'.json');
 		$site_name = get_bloginfo('name');
-		$site_url = get_bloginfo('url');
 		$admin_email = get_option('admin_email');
-		$headers = array('Content-Type: text/html; charset=UTF-8','From: ' . $site_name . ' <' . $admin_email . '>' . "\r\n");
+
+		// Check if _wordpress_notification_name is set
+		if ( empty($from_name_option) ) {
+			$from_name = $site_name;
+		} else {
+			$from_name = $from_name_option;
+		}
+
+		// Check if _wordpress_notification_email is set
+		if ( empty($from_email_option) ) {
+			$from_email = $admin_email;
+		} else {
+			$from_email = $from_email_option;
+		}
+
+		$site_url = get_bloginfo('url');
+		$headers = array('Content-Type: text/html; charset=UTF-8','From: ' . $from_name . ' <' . $from_email . '>' . "\r\n");
 		$to = $to_email;
 		$msg = '<h1>Plugin Manifest for ' . $site_name;
 		$msg .= '<br><span style="font-size:0.75em;"><a href="' . $site_url . '">' . $site_url . '</a></span>'; 
