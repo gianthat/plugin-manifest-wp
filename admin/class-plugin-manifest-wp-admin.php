@@ -237,6 +237,8 @@ class Plugin_Manifest_Wp_Admin {
 				register_setting( $this->plugin_name, $this->option_name . '_day', 'string' );
 				register_setting( $this->plugin_name, $this->option_name . '_license_key', 'string' );
 				register_setting( $this->plugin_name, $this->option_name . '_email_address', 'string' );
+				register_setting( $this->plugin_name, $this->option_name . '_wordpress_notification_email', 'string' );
+				register_setting( $this->plugin_name, $this->option_name . '_wordpress_notification_name', 'string' );
 
 		}
 
