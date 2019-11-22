@@ -168,7 +168,7 @@ class Plugin_Manifest_Wp_Admin {
 						// Add input field for Email address
 							add_settings_field(
 								$this->option_name . '_email_address',
-								__( 'Email Address', 'plugin-manifest-wp' ),
+								__( 'Recipient Email', 'plugin-manifest-wp' ),
 								array( $this, $this->option_name . '_email_address_cb' ),
 								$this->plugin_name . '_settings',
 								$this->option_name . '_general',
@@ -314,13 +314,14 @@ class Plugin_Manifest_Wp_Admin {
 				}
 
 			/**
-				 * Render the email address input for this plugin
+				 * Render the Recipient email address input for this plugin
 				 *
 				 * @since  1.0.0
 				 */
 				public function plugin_manifest_wp_email_address_cb() {
 					$email_address = get_option( $this->option_name . '_email_address' );
-					echo '<input placeholder="email@domain.com" type="text" size="80" name="' . $this->option_name . '_email_address' . '" id="' . $this->option_name . '_email_address' . '" value="' . $email_address . '"><p>Comma-separated list is allowed.</p>';
+					echo '<input placeholder="email@domain.com" type="text" size="80" name="' . $this->option_name . '_email_address' . '" id="' . $this->option_name . '_email_address' . '" value="' . $email_address . '"><p>Email address(es) of whom should receive the email. Comma-separated list is allowed.</p>';
+					echo '<hr>';
 				}
 
 			/**
