@@ -280,7 +280,7 @@ class Plugin_Manifest_Wp_Admin {
 			 * @since  1.0.0
 			 */
 			public function plugin_manifest_wp_general_cb() {
-				echo '<p>' . __( 'Please change the settings accordingly.', 'plugin-manifest-wp' ) . '</p>';
+				echo '<p>' . __( 'Change settings to who receives the email and how often.', 'plugin-manifest-wp' ) . '</p>';
 			}
 
 		/**
