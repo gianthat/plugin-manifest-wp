@@ -176,7 +176,37 @@ class Plugin_Manifest_Wp_Admin {
 							);
 
 				//
-				// End General Setting section
+				// Add a Notification section
+				//
+					add_settings_section(
+						$this->option_name . '_wp_email',
+						__( 'WordPress Email', 'plugin-manifest-wp' ),
+						array( $this, $this->option_name . '_wp_email_cb' ),
+						$this->plugin_name . '_settings'
+					);
+
+						// Add input field for WP Notification Email address
+							add_settings_field(
+								$this->option_name . '_wordpress_notification_email',
+								__( 'WordPress Notification Email', 'plugin-manifest-wp' ),
+								array( $this, $this->option_name . '_wordpress_notification_email_cb' ),
+								$this->plugin_name . '_settings',
+								$this->option_name . '_wp_email',
+								array( 'label_for' => $this->option_name . '_wordpress_notification_email' )
+							);
+
+						// Add input field for WP Notification Name
+							add_settings_field(
+								$this->option_name . '_wordpress_notification_name',
+								__( 'WordPress Notification Name', 'plugin-manifest-wp' ),
+								array( $this, $this->option_name . '_wordpress_notification_name_cb' ),
+								$this->plugin_name . '_settings',
+								$this->option_name . '_wp_email',
+								array( 'label_for' => $this->option_name . '_wordpress_notification_name' )
+							);
+
+				//
+				// End General and Notification settings sections
 				//
 
 				//
