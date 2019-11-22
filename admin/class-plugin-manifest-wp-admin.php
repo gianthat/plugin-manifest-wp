@@ -381,7 +381,7 @@ class Plugin_Manifest_Wp_Admin {
 				 */
 				public function plugin_manifest_wp_wordpress_notification_name_cb() {
 					$wordpress_notification_name = get_option( $this->option_name . '_wordpress_notification_name' );
-					echo '<input placeholder="Cyndi Lauper" type="text" size="80" name="' . $this->option_name . '_wordpress_notification_name' . '" id="' . $this->option_name . '_wordpress_notification_name' . '" value="' . $wordpress_notification_name . '"><p>This overrides the From name of "WordPress" that WordPress uses by default for notifications.</p>';
+					echo '<input placeholder="Cyndi Lauper" type="text" size="80" name="' . $this->option_name . '_wordpress_notification_name' . '" id="' . $this->option_name . '_wordpress_notification_name' . '" value="' . $wordpress_notification_name . '"><p>This overrides the From name of the Site Title found in Settings > <a href="options-general.php">General</a>.</p>';
 				}
 
 			/**
