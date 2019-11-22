@@ -352,8 +352,36 @@ class Plugin_Manifest_Wp_Admin {
 				 */
 				public function plugin_manifest_wp_email_address_cb() {
 					$email_address = get_option( $this->option_name . '_email_address' );
-					echo '<input placeholder="email@domain.com" type="text" size="80" name="' . $this->option_name . '_email_address' . '" id="' . $this->option_name . '_email_address' . '" value="' . $email_address . '"><p>Email address(es) of whom should receive the email. Comma-separated list is allowed.</p>';
-					echo '<hr>';
+					echo '<input placeholder="email@domain.com" type="email" size="80" name="' . $this->option_name . '_email_address' . '" id="' . $this->option_name . '_email_address' . '" value="' . $email_address . '"><p>Email address(es) of whom should receive the email. Comma-separated list is allowed.</p>';
+				}
+
+		/**
+			 * Render the text for the WP Notification section
+			 *
+			 * @since  1.1.0
+			 */
+			public function plugin_manifest_wp_wp_email_cb() {
+				echo '<p>' . __( 'Override WordPress notification email address and name to assist with email deliverability.', 'plugin-manifest-wp' ) . '</p>';
+			}
+
+			/**
+				 * Render the WordPress Notification Email input for this plugin
+				 *
+				 * @since  1.1.0
+				 */
+				public function plugin_manifest_wp_wordpress_notification_email_cb() {
+					$wordpress_notification_email = get_option( $this->option_name . '_wordpress_notification_email' );
+					echo '<input placeholder="email@domain.com" type="email" size="80" name="' . $this->option_name . '_wordpress_notification_email' . '" id="' . $this->option_name . '_wordpress_notification_email' . '" value="' . $wordpress_notification_email . '"><p>This overrides the admin email address that WordPress uses as the From for notifications.</p>';
+				}
+
+			/**
+				 * Render the WordPress Notification Name input for this plugin
+				 *
+				 * @since  1.1.0
+				 */
+				public function plugin_manifest_wp_wordpress_notification_name_cb() {
+					$wordpress_notification_name = get_option( $this->option_name . '_wordpress_notification_name' );
+					echo '<input placeholder="Cyndi Lauper" type="text" size="80" name="' . $this->option_name . '_wordpress_notification_name' . '" id="' . $this->option_name . '_wordpress_notification_name' . '" value="' . $wordpress_notification_name . '"><p>This overrides the From name of "WordPress" that WordPress uses by default for notifications.</p>';
 				}
 
 			/**
