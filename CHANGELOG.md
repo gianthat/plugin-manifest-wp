@@ -1,3 +1,10 @@
+#Changelog for Plugin Manifest WP
+
+### 1.1.0 November 22, 2019
+* Allows for custom WordPress Notification email address and name
+* Clarifies instructions on recipient settings
+* Tested up to WordPress 5.3.0
+
 ### 1.0.1 October 8, 2019
 * Tweak: Updates cron notice text
 

@@ -19,9 +19,11 @@ TODO: Install this like any other WordPress plugin. Duh.
 
 ### Settings
 **Push frequency**: Indicates how often the plugin will push send your plugin list info.  
-**Preferred day for push**: The day you'll get the info based on the frequency.  
+**Next run date**: Date of next or original run based on Push Frequency.  
 **License Key**: Enter your license key here. <-- This currently doesn't do anything.  
-**Email Address**: Email address where you'd like to receive your email report for this site.
+**Recipient Address**: Email address where you'd like to receive your email report for this site.  
+**WordPress Notification Email**: This overrides the admin email address that WordPress uses as the From for notifications.  
+**WordPress Notification Name**: This overrides the From name of the Site Title found in Settings > General.
 
 #### Extras
 We've included a handy "Force Push" button to further test and get info on demand. Click this button to see the magic. 🤔
