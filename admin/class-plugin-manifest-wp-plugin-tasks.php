@@ -164,6 +164,12 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 		// Who should get the email? This one.
 		$to_email = get_option( 'plugin_manifest_wp_email_address' );
 
+		// Who is the email from.
+		$from_email_option = get_option( 'plugin_manifest_wp_wordpress_notification_email' );
+
+		// The name of the sender.
+		$from_name_option = get_option( 'plugin_manifest_wp_wordpress_notification_name' );
+
 	/**
 	 * WordPress Core info
 	 */
