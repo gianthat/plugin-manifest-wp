@@ -312,15 +312,16 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 	 * @param object
 	 * @return bool
 	 */
-	function manifest_cron_mail() {
+	$setting_schedule = get_option( 'plugin_manifest_wp_frequency' );
+	function manifest_cron_mail( $setting_schedule ) {
 		$next_run = get_option( 'plugin_manifest_wp_day' );
 		$next_run = strtotime( $next_run );
 		$schedule = get_option( 'plugin_manifest_wp_frequency' );
-		if ( !wp_next_scheduled( 'plugin_manifest_wp_cron' ) ) {
-			wp_schedule_event( $next_run, $schedule, 'plugin_manifest_wp_cron' );
-		} elseif ( wp_next_scheduled( 'plugin_manifest_wp_cron' ) ) {
-			wp_clear_scheduled_hook('plugin_manifest_wp_cron');
-			wp_schedule_event( $next_run, $schedule, 'plugin_manifest_wp_cron' );
+		if ( $setting_schedule != $schedule ) {
+			wp_clear_scheduled_hook( 'plugin_manifest_wp_cron' );
+			if ( !wp_next_scheduled( 'plugin_manifest_wp_cron' ) ) {
+				wp_schedule_event( $next_run, $schedule, 'plugin_manifest_wp_cron' );
+			}
 		}
 	}
 
