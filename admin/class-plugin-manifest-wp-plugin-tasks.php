@@ -42,6 +42,31 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 		add_action( 'wp_ajax_get_all_items', array( &$this, 'get_all_items') );
 		add_action( 'init', array( &$this,'manifest_cron_mail' ) );
 		add_action( 'plugin_manifest_wp_cron', array( &$this, 'get_all_items' ) );
+		add_action( 'plugin_manifest_wp_next_event', array( &$this, 'get_all_items' ) );
+	}
+
+	/**
+	 * Checks for and creates the scheduled event.
+	 *
+	 * @param object
+	 * @return mixed bool/int
+	 */
+	public function manifest_cron_mail() {
+		$setting_schedule = get_option( 'plugin_manifest_wp_frequency' );
+		$next_run = get_option( 'plugin_manifest_wp_day' );
+		$next_run = strtotime( $next_run );
+		$schedule = get_option( 'plugin_manifest_wp_frequency' );
+		$event_schedule = wp_get_schedule( 'plugin_manifest_wp_cron' );
+		$next_event = wp_get_scheduled_event( 'plugin_manifest_wp_cron' );
+
+		if ( ! wp_next_scheduled( 'plugin_manifest_wp_cron' ) ) {
+			wp_schedule_event( $next_run, $schedule, 'plugin_manifest_wp_cron' );
+		} else {
+			wp_clear_scheduled_hook( 'plugin_manifest_wp_cron');
+			wp_clear_scheduled_hook( 'plugin_manifest_wp_next_event');
+			wp_schedule_single_event( $next_run, 'plugin_manifest_wp_next_event' );
+			wp_reschedule_event( $next_run, $schedule, 'plugin_manifest_wp_cron' );
+		}
 	}
 
   /**
@@ -303,26 +328,7 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 
 		// Email all of it.
 		wp_mail($to, 'Plugin Manifest for ' . $site_name, $msg, $headers, $attachments);
-	}
 
-
-	/**
-	 * Checks for and creates the scheduled event.
-	 *
-	 * @param object
-	 * @return bool
-	 */
-	$setting_schedule = get_option( 'plugin_manifest_wp_frequency' );
-	function manifest_cron_mail( $setting_schedule ) {
-		$next_run = get_option( 'plugin_manifest_wp_day' );
-		$next_run = strtotime( $next_run );
-		$schedule = get_option( 'plugin_manifest_wp_frequency' );
-		if ( $setting_schedule != $schedule ) {
-			wp_clear_scheduled_hook( 'plugin_manifest_wp_cron' );
-			if ( !wp_next_scheduled( 'plugin_manifest_wp_cron' ) ) {
-				wp_schedule_event( $next_run, $schedule, 'plugin_manifest_wp_cron' );
-			}
-		}
 	}
 
 	/**
