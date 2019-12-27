@@ -1,5 +1,9 @@
 #Changelog for Plugin Manifest WP
 
+### 1.1.1 December 27, 2019
+* Cleans up cron
+* Adds non-repeating cron event for Next Run
+
 ### 1.1.0 November 22, 2019
 * Allows for custom WordPress Notification email address and name
 * Clarifies instructions on recipient settings
