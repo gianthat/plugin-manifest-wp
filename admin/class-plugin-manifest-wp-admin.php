@@ -293,6 +293,11 @@ class Plugin_Manifest_Wp_Admin {
 				?>
 					<fieldset>
 						<label>
+							<input type="radio" name="<?php echo $this->option_name . '_frequency' ?>" id="<?php echo $this->option_name . '_frequency' ?>" value="hourly" <?php checked( $frequency, 'hourly' ); ?>>
+							<?php _e( 'Hourly', 'plugin-manifest-wp' ); ?>
+						</label>
+						<br>
+						<label>
 							<input type="radio" name="<?php echo $this->option_name . '_frequency' ?>" id="<?php echo $this->option_name . '_frequency' ?>" value="daily" <?php checked( $frequency, 'daily' ); ?>>
 							<?php _e( 'Daily', 'plugin-manifest-wp' ); ?>
 						</label>
@@ -392,7 +397,7 @@ class Plugin_Manifest_Wp_Admin {
 				 * @return string           Sanitized value
 				 */
 				public function plugin_manifest_wp_sanitize_frequency( $frequency ) {
-					if ( in_array( $frequency, array( 'daily', 'weekly', 'bi_weekly', 'monthly' ), true ) ) {
+					if ( in_array( $frequency, array( 'hourly', 'daily', 'weekly', 'bi_weekly', 'monthly' ), true ) ) {
 				        return $frequency;
 				    }
 				}
