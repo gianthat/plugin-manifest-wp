@@ -327,7 +327,7 @@ class Plugin_Manifest_Wp_Admin {
 			 */
 			public function plugin_manifest_wp_day_cb() {
 				$day = get_option( $this->option_name . '_day' );
-				echo '<input type="date" name="' . $this->option_name . '_day' . '" id="' . $this->option_name . '_day' . '" value="' . $day . '" min="' . date('Y-m-d') . '"><p>Next date to run relative relative to the last change of plugin settings.</p>';
+				echo '<input type="date" name="' . $this->option_name . '_day' . '" id="' . $this->option_name . '_day' . '" value="' . $day . '" min="' . date('Y-m-d') . '"><p>Next date to run relative relative to the last change of plugin settings. <a href="?page=plugin-manifest-wp&tab=tools" class="button button-link button-large button-force mb-3">Run now</a></p>';
 			}
 
 		/**
