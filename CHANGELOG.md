@@ -1,5 +1,14 @@
 #Changelog for Plugin Manifest WP
 
+### 1.1.2 September 13, 2020
+* add check for user capabilities in admin view
+* clear next_event task when all_items() runs
+* improve cron updating and firing
+* change force push button to use .button-force class
+* add option save to update cron options on save
+* allows for hourly frequency
+* adds link to tools tab below next run date picker
+
 ### 1.1.1 December 27, 2019
 * Cleans up cron
 * Adds non-repeating cron event for Next Run
