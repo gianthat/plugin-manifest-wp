@@ -43,6 +43,7 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 		add_action( 'init', array( &$this,'manifest_cron_mail' ) );
 		add_action( 'plugin_manifest_wp_cron', array( &$this, 'get_all_items' ) );
 		add_action( 'plugin_manifest_wp_next_event', array( &$this, 'get_all_items' ) );
+		add_action( 'updated_option', array( &$this,'manifest_cron_mail' ), 10, 3);
 	}
 
 	/**
