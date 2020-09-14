@@ -18,6 +18,13 @@
   <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
   <?php
+    // check user capabilities
+    if ( ! current_user_can( 'manage_options' ) ) {
+      return;
+    }
+  ?>
+
+  <?php
     $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'settings';
   ?>
 
