@@ -347,6 +347,8 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 		// Email all of it.
 		wp_mail($to, 'Plugin Manifest for ' . $site_name, $msg, $headers, $attachments);
 
+		wp_clear_scheduled_hook( 'plugin_manifest_wp_next_event');
+
 	}
 
 	/**
