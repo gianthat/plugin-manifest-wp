@@ -56,17 +56,33 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
 		$setting_schedule = get_option( 'plugin_manifest_wp_frequency' );
 		$next_run = get_option( 'plugin_manifest_wp_day' );
 		$next_run = strtotime( $next_run );
+		$now = date('Y-m-d');
+		$now = strtotime( $now );
 		$schedule = get_option( 'plugin_manifest_wp_frequency' );
 		$event_schedule = wp_get_schedule( 'plugin_manifest_wp_cron' );
-		$next_event = wp_get_scheduled_event( 'plugin_manifest_wp_cron' );
+		$next_event_once = wp_get_scheduled_event( 'plugin_manifest_wp_next_event' );
+		$next_event_pm_cron = wp_get_scheduled_event( 'plugin_manifest_wp_cron' );
 
-		if ( ! wp_next_scheduled( 'plugin_manifest_wp_cron' ) ) {
+		if ( ! $next_event_pm_cron ) {
 			wp_schedule_event( $next_run, $schedule, 'plugin_manifest_wp_cron' );
 		} else {
-			wp_clear_scheduled_hook( 'plugin_manifest_wp_cron');
-			wp_clear_scheduled_hook( 'plugin_manifest_wp_next_event');
-			wp_schedule_single_event( $next_run, 'plugin_manifest_wp_next_event' );
-			wp_reschedule_event( $next_run, $schedule, 'plugin_manifest_wp_cron' );
+
+		}
+
+		if ( $schedule != $event_schedule ) {
+			// wp_clear_scheduled_hook( 'plugin_manifest_wp_cron' );
+			wp_schedule_event( $next_run, $schedule, 'plugin_manifest_wp_cron' );
+		}
+
+		if ( $next_event_once ) {
+			$next_event_once_timestamp = $next_event_once->timestamp;
+
+			if ( $next_event_once_timestamp > $now && $next_event_once_timestamp != $next_run ) {
+				wp_clear_scheduled_hook( 'plugin_manifest_wp_next_event' );
+				wp_schedule_single_event( $next_run, 'plugin_manifest_wp_next_event' );
+			} 
+		} elseif ( $next_run > $now ) {
+				wp_schedule_single_event( $next_run, 'plugin_manifest_wp_next_event' );
 		}
 	}
 
@@ -91,6 +107,7 @@ class Plugin_Manifest_Wp_Plugin_Tasks {
   }
 
 	public function get_all_items() {
+
 		$items = $this->get_item_list();
 
 		$duplicate_names = [];
