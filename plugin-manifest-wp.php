@@ -2,8 +2,8 @@
 /*
 Plugin Name: Plugin Manifest
 Description: Generates a summary of all installed plugins and sends an email to specified recipients.
-Version: 1.0
-Author: Your Name
+Version: 2.0
+Author: Reid Burnett
 */
 
 // Include the options page file
